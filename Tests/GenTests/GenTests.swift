@@ -84,6 +84,11 @@ final class GenTests: XCTestCase {
     XCTAssertEqual("hello", Gen.always(["hello", "goodbye"]).element.run(using: &xoshiro))
   }
 
+  func testElementOf_UnorderedComparable() {
+    XCTAssertEqual("goodbye", Gen.element(of: Set(["hello", "goodbye"])).run(using: &xoshiro))
+    XCTAssertEqual("goodbye", Gen.always(Set(["hello", "goodbye"])).element.run(using: &xoshiro))
+  }
+
   func testShuffled() {
     let suit = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
     XCTAssertEqual(
