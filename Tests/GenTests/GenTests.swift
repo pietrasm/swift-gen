@@ -80,8 +80,8 @@ final class GenTests: XCTestCase {
   }
 
   func testElementOf() {
-    XCTAssertEqual("hello", Gen.element(of: ["hello", "goodbye"]).run(using: &xoshiro))
-    XCTAssertEqual("hello", Gen.always(["hello", "goodbye"]).element.run(using: &xoshiro))
+    XCTAssertEqual("goodbye", Gen.element(of: ["hello", "goodbye"]).run(using: &xoshiro))
+    XCTAssertEqual("goodbye", Gen.always(["hello", "goodbye"]).element.run(using: &xoshiro))
   }
 
   func testElementOf_UnorderedComparable() {

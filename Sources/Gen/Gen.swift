@@ -317,6 +317,18 @@ extension Gen {
     return Gen { rng in collection.randomElement(using: &rng) }
   }
 
+  @inlinable
+  public static func element<C>(of collection: C) -> Gen
+  where C: Collection, C.Element: Comparable, Value == C.Element? {
+    return Gen { rng in
+      if rng._rng is Xoshiro {
+        return collection.sorted().randomElement(using: &rng)
+      }
+
+      return collection.randomElement(using: &rng)
+    }
+  }
+
   /// Produces a generator of shuffled arrays of this generator's collection.
   ///
   /// - Parameter collection: A collection.
@@ -337,6 +349,14 @@ extension Gen where Value: Collection {
   @inlinable
   public var shuffled: Gen<[Value.Element]> {
     return self.flatMap(Gen<[Value.Element]>.shuffled)
+  }
+}
+
+extension Gen where Value: Collection, Value.Element: Comparable {
+  /// Produces a generator of random elements of this generator's collection.
+  @inlinable
+  public var element: Gen<Value.Element?> {
+    return self.flatMap(Gen<Value.Element?>.element)
   }
 }
 
