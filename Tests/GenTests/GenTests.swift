@@ -89,6 +89,24 @@ final class GenTests: XCTestCase {
     XCTAssertEqual("goodbye", Gen.always(Set(["hello", "goodbye"])).element.run(using: &xoshiro))
   }
 
+  func testElementOf_Unordered() {
+    struct Element: Hashable {
+      let string: String
+    }
+
+    XCTAssertEqual(
+      Element(string: "goodbye"),
+      Gen.element(of: Set([Element(string: "hello"), Element(string: "goodbye")]))
+        .run(using: &xoshiro)
+    )
+    XCTAssertEqual(
+      Element(string: "goodbye"),
+      Gen.always(Set([Element(string: "hello"), Element(string: "goodbye")]))
+        .element
+        .run(using: &xoshiro)
+    )
+  }
+
   func testShuffled() {
     let suit = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"]
     XCTAssertEqual(
