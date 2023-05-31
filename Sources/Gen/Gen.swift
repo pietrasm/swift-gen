@@ -1,3 +1,5 @@
+import CustomDump
+
 /// A composable, transformable context for generating random values.
 public struct Gen<Value> {
   @usableFromInline
@@ -314,7 +316,16 @@ extension Gen {
   /// - Parameter collection: A collection.
   @inlinable
   public static func element<C>(of collection: C) -> Gen where C: Collection, Value == C.Element? {
-    return Gen { rng in collection.randomElement(using: &rng) }
+    return Gen { rng in
+      if rng._rng is Xoshiro {
+        return collection.sorted {
+          String(customDumping: $0) < String(customDumping: $1)
+        }
+        .randomElement(using: &rng)
+      }
+      
+      return collection.randomElement(using: &rng)
+    }
   }
 
   @inlinable
