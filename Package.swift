@@ -14,7 +14,7 @@ let package = Package(
     .library(name: "Gen", targets: ["Gen"])
   ],
   dependencies: [
-    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "0.10.3"),
+    .package(url: "https://github.com/pointfreeco/swift-custom-dump", from: "1.0.0"),
   ],
   targets: [
     .target(
